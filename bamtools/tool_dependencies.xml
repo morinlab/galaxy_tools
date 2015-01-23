@@ -2,7 +2,7 @@
 	<tool_dependency>
 
 		<package name="cmake" version="3.1.0">
-			<repository name="package_cmake_3_1_0" owner="malbuquerque" prior_installation_required="True"/>
+			<repository name="package_cmake_3_1_0" owner="marcoalbuquerque" prior_installation_required="True"/>
 		</package>
 
 		<package name="samtools" version="0.1.18">
@@ -12,8 +12,21 @@
 		<package name="bamtools" version="2.3.0">
 			<install version="1.0">
 				<actions>
-
+					
 					<action type="download_by_url">https://github.com/pezmaster31/bamtools/archive/v2.3.0.tar.gz</action>
+		
+					<action type="set_environment_for_install">
+						<repository name="package_cmake_3_1_0" owner="marcoalbuquerque">
+							<package name="cmake" version="3.1.0"/>
+						</repository>
+					</action>
+
+					<action type="set_environment_for_install">
+						<repository name="package_samtools_0_1_18" owner="devteam">
+							<package name="samtools" version="0.1.18"/>
+						</repository>
+					</action>		
+	
 					<action type="shell_command">mkdir build</action>
 					<action type="change_directory">build</action>
 					<action type="shell_command">cmake ..</action>
