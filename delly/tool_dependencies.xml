@@ -1,24 +1,34 @@
-<?xml version=1.0?>
+<?xml version="1.0"?>
 	<tool_dependency>
-		
-		<package name="boost" version="1.53">
-			<repository name="package_boost_1_53" owner="iuc"/>
+		<package name="boost" version="1.53.0">
+			<repository name="package_boost_1_53" owner="iuc" prior_installation_required="True"/>
 		</package>
-
 		<package name="bamtools" version="2.3.0">
-			<repository name="package_bamtools_2_3_0" owner="malbuquerque"/>
+			<repository name="package_bamtools_2_3_0" owner="marcoalbuquerque" prior_installation_required="True"/>
 		</package>
-
 		<package name="seqtk" version="1.0.0">
-			<repository name="package_seqtk_1_0_0" owner="malbuquerque"/>
+			<repository name="package_seqtk_1_0_0" owner="marcoalbuquerque" prior_installation_required="True"/>
 		</package>
-			
 		<package name="delly" version="0.6.1">
-			<install version="1.0.0">
+			<install version="1.0">
 				<actions>
 					<action type="download_by_url">https://github.com/tobiasrausch/delly/archive/v0.6.1.tar.gz</action>
-					<action type="download_by_url">https://github.com/morinlab/ </action>
-					<action type="shell_command">make all BOOST_ROOT=\$BOOST_ROOT BAMTOOLS_ROOT=\$BAMTOOLS_ROOT SEQTK_ROOT=\$SEQTK_ROOT</action>
+					<action type="set_environment_for_install">
+						<repository name="package_boost_1_53" owner="iuc">
+							<package name="boost" version="1.53.0"/>
+						</repository>
+					</action>
+					<action type="set_environment_for_install">
+						<repository name="package_bamtools_2_3_0" owner="marcoalbuquerque">
+							<package name="bamtools" version="2.3.0"/>
+						</repository>
+					</action>
+					<action type="set_environment_for_install">
+						<repository name="package_seqtk_1_0_0" owner="marcoalbuquerque">
+							<package name="seqtk" version="1.0.0"/>
+						</repository>
+					</action>
+					<action type="shell_command">make -f $REPOSITORY_INSTALL_DIR/Makefile all BOOST_ROOT=${BOOST_ROOT_DIR}/ BAMTOOLS_ROOT=${BAMTOOLS_ROOT}/ SEQTK_ROOT=${SEQTK_ROOT}/</action>
 					<action type="move_directory_files">
 						<source_directory>.</source_directory>
 						<destination_directory>$INSTALL_DIR</destination_directory>
@@ -29,6 +39,4 @@
 				</actions>
 			</install>
 		</package>
-
 	</tool_dependency>
-
