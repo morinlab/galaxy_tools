@@ -1,0 +1,58 @@
+<tool id="augment_maf" name="Augment MAFs" version="1.0.0">
+	<description>Add Normal and/or Tumor Allele Counts to a MAF file</description>
+	<requirements>
+		<requirement type="package" version="0.7.7">pysam</requirement>
+		<requirement type="package" version="1.65">biopython</requirement>
+		<requirement type="set_environment">AUGMENT_MAF_DIR</requirement>
+		<requirement type="package" version="1.0.0">augment_maf</requirement>
+		<requirement type="package" version="7.215">mafft</requirement>
+	</requirements>
+	<command>
+	#for $i, $s in enumerate($repeatNormal)
+		ln -s $s.normalBam ./normal$(i).bam;
+		ln -s $s.normalBam.metadata.bam_index ./normal$(i).bam.bai;
+	#end for
+	#for $i, $s in enumerate($repeatTumour)
+		ln -s $s.tumourBam ./tumour$(i).bam;
+		ln -s $s.tumourBam.metadata.bam_index ./tumour$(i).bam.bai;
+	#end for
+	python \$AUGMENT_MAF_DIR/augment_maf.py
+	#if $replace
+	-r
+	#end if
+	#for $i, $s in enumerate($repeatNormal)
+		#if $i == 1 
+			-n
+	#end if
+		./normal$(i).bam
+	#end for 
+	#for $i, $s in enumerate($repeatTumour)
+		#if $i == 1
+			-t
+		#end if
+		./tumour$(i)/bam	
+	#end for
+	-m
+	#for $i, $s in enumerate($repeatMaf)
+		$s.maf
+	#end for 
+	$reference
+	$outfile;
+	</command>
+	<inputs>
+		<repeat name="repeatNormal" title="Normal Bam Alignment" min="0" default="0">
+			<param format="bam" name="normalBam" type="data" label="File"/>
+		</repeat>
+		<repeat name="repeatTumour" title="Tumour Bam Alignment" min="0" default="0">
+			<param format="bam" name="tumourBam" type="data" label="File"/>
+		</repeat>
+		<repeat name="repeatMaf" title="MAF File" min="1" default="1">
+			<param format="maf" name="maf" type="data" label="File"/>
+		</repeat>
+		<param type="boolean" name="replace" value="false" label="Replace"/>
+		<param format="fasta" name="reference" type="data" label="Reference File"/>
+	</inputs>
+	<outputs>
+		<data format="maf" name="outfile"/>
+	</outputs>	
+</tool>
