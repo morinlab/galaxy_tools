@@ -1,0 +1,58 @@
+
+
+	<command>
+
+	
+
+
+
+	</command>
+	<input>
+
+		<!-- Config File Variables -->
+		<repeat name="repeatBam" title="Pindel Con">
+			<param type="data" format="bam" name="bam" label="BAM Alignment"/>
+			<param type="integer" name="length" label="Insert Size"/>
+			<param type="select" name="sample_tag" label="Sample Tag">
+				<option value="tumour">Tumour</option>
+				<option value="normal">Normal</option>
+			</param>
+		</repeat>
+		
+		<!-- Additional Required Variables -->
+		<param type="data" format="fasta" name="ref" label="Genome Reference"/>
+		
+		<!-- Optional Variables, but always shown -->
+		<param name="type" type="select" multiple="true" display="checkboxes" label="Variant Types">
+			<option value="DEL" selected="true">Deletions</option>
+			<option value="DUP" selected="true">Tandem Duplications</option>
+			<option value="INV" selected="true">Inversions</option>
+			<option value="TRA" selected="true">Translocations</option>
+		</param>
+
+		<!-- Optional Variables, possibly hidden -->
+		<conditional name="optional">
+			<param type="select" name="optional_select" label="Show Optional Variables">
+				<option value="False" selected="True">No</option>
+				<option value="True">Yes</option>		
+			</param>
+			<when value="True">
+				<param type="boolean" name="R" default="true" label=""/>
+				<param type="integer" name="H" value="8" label="Minimum number of bases required to align to reference"/>
+				<param type="integer" name="x" value="4" min="1" max="9" label="Maximum size of SV to detect, approximately 2 ^ (5 + 2 * input value)"/>
+				<param type="integer" name="w" value="5" label="Number of ref bases to process at time, in millions"/>
+				<param type="float" name="e" value="0.01" label="Expected sequencing error rate"/>
+				<param type="float" name="E" value="0.95" label="Sensitivity"/>
+				<param type="float" name="u" value="0.02" label=""/>
+
+
+
+			
+			</when>
+
+	</input>
+	<output>
+
+
+
+	</output>

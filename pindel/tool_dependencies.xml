@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<tool_dependency>
+	<package name="pindel" version="0.2.5a7">
+		<install version="1.0">
+			<actions>
+				<action type="download_by_url">https://github.com/genome/pindel/archive/v0.2.5a7.tar.gz</action>
+
+			</actions>
+		</install>
+	</package>
+</tool_dependency>
