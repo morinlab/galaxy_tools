@@ -21,22 +21,15 @@
 	-r
 	#end if
 	#for $i, $s in enumerate($repeatNormal)
-		#if $i == 1 
-			-n
-	#end if
-		./normal$(i).bam
+		-n ./normal$(i).bam
 	#end for 
 	#for $i, $s in enumerate($repeatTumour)
-		#if $i == 1
-			-t
-		#end if
-		./tumour$(i)/bam	
+		-t ./tumour$(i).bam	
 	#end for
-	-m
 	#for $i, $s in enumerate($repeatMaf)
-		$s.maf
+		-m $s.maf
 	#end for 
-	$reference
+	${index.fields.path}
 	$outfile;
 	</command>
 	<inputs>
@@ -50,7 +43,9 @@
 			<param format="maf" name="maf" type="data" label="File"/>
 		</repeat>
 		<param type="boolean" name="replace" value="false" label="Replace"/>
-		<param format="fasta" name="reference" type="data" label="Reference File"/>
+		<param name="index" type="select" label="Reference File">
+			<options from_data_table="all_fasta"/> 
+		</param>
 	</inputs>
 	<outputs>
 		<data format="maf" name="outfile"/>
