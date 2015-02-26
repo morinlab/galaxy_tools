@@ -1,0 +1,21 @@
+<tool id="add_vaf_and_ccf" name="Add VAF and CCF" version="0.0.1">
+	<description>Adds VAF and CCF to a MAF file using TITAN output and reference and alteration counts</description>
+	<requirements>
+		<requirement type="package" version="0.14.1">pandas</requirement>
+		<requirement type="package" version="0.6.6">pybedtools</requirement>
+		<requirement type="package" version="1.9">numpy</requirement>
+		<requirement type="package" version="0.0.1">add_vaf_and_ccf</requirement>
+	</requirements>
+	<command interpreter='python'>
+		add_vaf_and_ccf.py -d $distance $maf $params $segs $outfile
+	</command>
+	<inputs>
+		<param type="data" format="maf" name="maf" label="MAF" help="Must contain t_ref_count and t_alt_count"/>
+		<param type="data" format="txt" name="segs" label="TITANs Segment File"/>
+		<param type="data" format="txt" name="params" label="TITANs Parameter File"/>
+		<param type="integer" name="distance" value="3200000000" min="1" label="Copy and Variant Distance" help="Maximum distance to consider a copy event associated with a variant event, assuming the events are non-overlapping"/>
+	</inputs>
+	<outputs>
+		<data format="maf" name="outfile"/>
+	</outputs>
+</tool>
