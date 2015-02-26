@@ -1,0 +1,28 @@
+<tool id="titan_two" name="Titan Step Two"/>
+	<description>
+		Estimate the Clonal Cluster of Events and Cellular Prevalence
+	</description>
+	<requirements>
+	</requirements>
+	<commands>
+
+		<!-- Run TitanCNA successively with different number of clusters (1-5) -->
+		R --no-save --args ${tumour}_vs_${normal} tumour_read_counts_at_hetpsns.filtered.txt cn_data.txt $map $cluster 4 2 titan_cluster_${cluster}.txt titan_cluster_${cluster}_params.txt 0 TRUE 0.5 map 50 1e-300 1e9 1e9 15000 15000 8 TRUE < $__titan_dir__/scripts/titan.R
+
+		<!-- Create SEG files for the optimal number of clusters -->
+		$__titan_dir__/scripts/createTITANsegmentfiles.pl 
+		-id=${tumour}_vs_${normal} 
+		-infile=titan_cluster_${cluster}.txt
+		-outfile=titan_cluster_${cluster}_segs.txt
+		-outIGV=titan_cluster_${cluster}_segs
+
+	</commands>
+	<inputs>
+		<param />
+		<param />
+	</inputs>
+	<outputs>
+		<param />
+		<param />
+	</outputs>
+</tool>

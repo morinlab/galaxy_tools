@@ -1,0 +1,37 @@
+<tool id="titan_one" name="Titan Step One"/>
+	<description>
+		Identify Heterozygous Positions and Counts as well as Read Count Statistics for TITAN
+	</description>
+	<requirements>
+		<requirement type="package" version="0.1.19">samtools</requirement>
+	</requirements>
+	<parallelism method="multi" split_inputs="normal,tumour" split_mode="by_rname" merge_outputs="het_counts,read_counts"/>
+	<command>
+
+		<!-- Identify heterozygous germline positions (and their genotypes) in normal BAM file -->
+		samtools view -b -F 0x0400 $normal | 
+		samtools mpileup -q 20 -Q 10 -uf $reference - | 
+		bcftools view -cgv - | 
+		python $__tool_data_path__/scripts/apollohFindHetPsns.py |
+		python $__tool_data_path__/scripts/count.py - $tumour $reference 10 20 |
+		python $__tool_data_path__/scripts/filterCounts.py -t - -r $dbSNP -o $het_counts;
+
+		<!-- Calculate read counts for a BAM file -->
+		$__tool_data_path__/scripts/readCounter -w $w -q $q $normal | python $__titan_dir__/scripts/filter_chromosomes.py > normal.wig;
+		$__tool_data_path__/scripts/readCounter -w $w -q $q $tumour | python $__titan_dir__/scripts/filter_chromosomes.py > tumour.wig;
+		R --no-save --args $project_name tumour.wig normal.wig $gc $map $read_counts &lt; $__tool_data_path__/scripts/correctReads.R 2>&amp;1;
+
+	</command>
+	<inputs>
+		<param type="data" format="bam" name="tumour" label="Sorted Tumour BAM"/>
+		<param type="data" format="bam" name="normal" label="Sorted Normal BAM"/>
+		<param type="data" format="fasta" name="reference" label="Genome Reference FASTA"/>
+		<param type="data" format="wig" name="gc" label=""/>
+		<param type="data" format="wig" name="map" label=""/>
+		<param type="data" format="wig" name="dbSNP" label=""/>
+	</inputs>
+	<outputs>
+		<data format="vcf" name="het_counts"/>
+		<data format="vcf" name="read_counts"/>
+	</outputs>
+</tool>

@@ -1,0 +1,9 @@
+<?xml verion="1.0.0"?>
+<tool_dependency>
+	<package name='titan' version='1.5.7'>
+		<install version="1.0">
+			<actions>
+				<action type="download_by_url">https://github.com/gavinha/TitanCNA/archive/v1.5.7.tar.gz</action>
+				
+			
+	</package>
