@@ -1,5 +1,6 @@
 import argparse
 import math
+import pysam
 
 if __name__ == "__main__":
     desc = "Create BAM interval file for easily parallelism in Galaxy"
@@ -13,7 +14,7 @@ if __name__ == "__main__":
     	"--input", "-i",
     	type=str,
     	required=True,
-    	help="Input FASTA file"
+    	help="Input BAM file"
     	)
     parser.add_argument(
     	"--output", "-o", 
@@ -28,42 +29,56 @@ if __name__ == "__main__":
     	default=50000000,
     	help="The number of bases to include in a chunk interval, required when 'by_chunks' specified"
     	)
+    parser.add_argument(
+        "--chromosome",
+        action="store_true",
+        required=False,
+        help="Add the Chromosome to the Interval File"
+        )
+    parser.add_argument(
+        "--start_position",
+        action="store_true",
+        required=False,
+        help="Add the Start Position to the Interval File"
+        )
+    parser.add_argument(
+        "--end_position",
+        action="store_true",
+        required=False,
+        help="Add the End Position to the Interval File"
+        )
+
     args = parser.parse_args()
     data = {}
-    rnames = list()
-    reference = open(args.input, 'r')
-    output = open(args.output, 'w')
-    current_rname = ''
+    alignment = pysam.AlignmentFile(args.input, "rb")
+    header = alignment.header
+    chunk_size = args.chunk_size
 
-    for line in reference:
-        line = line[:-1]
-        line = line.replace(' ', '')
-        if line.startswith('>'):
-            current_rname = line[1:]
-            rnames.append(current_rname)
-            print current_rname
-            data[current_rname] = {}
-            data[current_rname]['GENOME'] = 0
-            data[current_rname]['KNOWN'] = 0
-            continue
-        else:
-            data[current_rname]['GENOME'] += len(line)
-            line = line.replace('N','')
-            data[current_rname]['KNOWN'] += len(line)
+    for seq in header['SQ']:
+        rname = seq['SN']
+        length = seq['LN']
+        if not rname in header:
+            data[rname] = []
+        
+        if args.mode == 'by_rname':
+            chunk_size = int(length)
 
-    if args.mode == 'by_chunk':
-    	for rname in rnames:
-    		for i in range(int(math.ceil(float(data[rname]['GENOME']) / float(args.chunk_size)))):
-    			if (i+1) * args.chunk_size > data[rname]['GENOME']:
-    				line = "%s\t%s\t%s\t%s\t%s\n" % (rname, (i * args.chunk_size) + 1, data[rname]['GENOME'], data[rname]['KNOWN'], data[rname]['GENOME'])
-    				output.write(line)
-    			else:
-    				line = "%s\t%s\t%s\t%s\t%s\n" % (rname, (i * args.chunk_size) + 1, (i+1) * args.chunk_size, data[rname]['KNOWN'], data[rname]['GENOME'])
-    				output.write(line)
+        for i in range(int(math.ceil(float(length) / float(chunk_size)))):
+            if (i+1) * chunk_size > length:
+                data[rname].append([rname,(i * chunk_size) + 1, length])
+            else:
+                data[rname].append([rname,(i * chunk_size) + 1, (i+1) * chunk_size])
 
-    else:
-    	for rname in rnames:
-    		line = "%s\t%s\t%s\t%s\t%s\n" % (rname, 1, data[rname]['GENOME'], data[rname]['KNOWN'], data[rname]['GENOME'])
-    		output.write(line)
+    output = open(args.output,'w')
 
-   	output.close()
+    for seq in header['SQ']:
+        rname = seq['SN']
+        for interval in data[rname]:
+            line = ''
+            if args.chromosome:
+                line = ''.join([line,'%s\t' % interval[0]])
+            if args.start_position:
+                line = ''.join([line,'%s\t' % interval[1]])
+            if args.end_position:
+                line = ''.join([line,'%s\t' % interval[2]])
+            output.write(''.join([line[:-1], '\n']))

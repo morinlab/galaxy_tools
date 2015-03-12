@@ -16,10 +16,13 @@
 			#end if		
 			--input $input
 			--output $output
+			--chromosome
+			--start_position
+			--end_position
 
 		<!-- STRELKA COMMAND -->
 		#elif $modes.mode == "strelka"
-			python \$MAKE_PARALLEL_DIR/make_interval.py --mode by_rname --input $input --output $output
+			python \$MAKE_PARALLEL_DIR/make_interval.py --mode by_rname --input $input --output $output --chromosome
 	
 		<!-- FUTURE COMMANDS -->
 
