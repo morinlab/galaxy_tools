@@ -1,9 +1,9 @@
-<tool id="make_interval" name="Make Intervals" version="1.0.0">
-	<description> Creates Intervals for a BAM file, useful in BAM parrallelization </description>
+<tool id="make_parallel" name="Make Parallel" version="1.0.0">
+	<description> Creates Interval files used to parallelize certain Galaxy Tools </description>
 	<requirements>
 		<requirement type="package" version="0.8.1">pysam</requirement>
-		<requirement type="package" version="1.0.0">make_interval</requirement>
-		<requirement type="set_environment">MAKE_INTERVAL_DIR</requirement>
+		<requirement type="package" version="1.0.0">make_parallel</requirement>
+		<requirement type="set_environment">MAKE_PARALLEL_DIR</requirement>
 	</requirements>
 	<command>
 		
@@ -12,7 +12,7 @@
 			python \$MAKE_PARALLEL_DIR/make_interval.py
 			--mode $modes.intervals.interval
 			#if $modes.intervals.interval == 'by_chunk'
-				-chunk_size $modes.intervals.chunk_size
+				--chunk_size $modes.intervals.chunk_size
 			#end if		
 			--input $input
 			--output $output
@@ -23,13 +23,15 @@
 		<!-- STRELKA COMMAND -->
 		#elif $modes.mode == "strelka"
 			python \$MAKE_PARALLEL_DIR/make_interval.py --mode by_rname --input $input --output $output --chromosome
-	
+
 		<!-- FUTURE COMMANDS -->
 
 		#end if
+
 	</command>
 	<inputs>
 		<conditional name="modes">
+			
 			<param type="select" name="mode" label="Pick Mode for Parallelism">
 				<option value="default">Default</option>
 				<option value="strelka">Strelka</option>
@@ -39,15 +41,15 @@
 			<!-- DEFAULT SETTINGS -->
 			<when value="default">
 				<param type="data" format="bam" name="input" label="BAM Alignment File" help="Information is pulled from the header, ensure consistent across BAMs"/>
-		    <conditional name="intervals">
-		      <param type="select" name="interval" label="Interval Mode">
-    		    <option value="by_rname">Split into Chromosomes</option>
-       			<option value="by_chunk" selected="true">Split into Chunks</option>
-      		</param>
-      		<when value="by_chunk">
-        		<param type="integer" name="chunk_size" value="50000000" label="Number of Bases to include in each Interval"/>
-      		</when>
-    		</conditional>
+		   		<conditional name="intervals">
+		      	<param type="select" name="interval" label="Interval Mode">
+    		    	<option value="by_rname">Split into Chromosomes</option>
+       				<option value="by_chunk" selected="true">Split into Chunks</option>
+      			</param>
+	      		<when value="by_chunk">
+	        		<param type="integer" name="chunk_size" value="50000000" label="Number of Bases to include in each Interval"/>
+	      		</when>
+    			</conditional>
 			</when>
 
 			<!-- STRELKA SETTINGS -->
@@ -56,7 +58,8 @@
 			</when>
 						
 			<!-- FUTURE MODE SETTINGS -->
-		<conditional>
+		</conditional>
+	</inputs>
 	<outputs>
 		<data format="bed" name="output"/>
 	</outputs>
