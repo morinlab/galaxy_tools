@@ -1,0 +1,24 @@
+<tool id="clipoverlap" name="clipOverlap" version="1.0.13">
+	<description>
+		Clip overlapping read pairs in a SAM/BAM File already sorted by Coordinate
+	</description>
+	<requirements>
+		<requirement type="package" version="1.0.13">bamutil</requirement>
+	</requirements>
+	<command>
+		ln -s $input input.bam;
+		ln -s $input.metadata.bam_index input.bam.bai;
+		bam clipOverlap --in input.bam --out output.bam;
+		mv output.bam $output;
+	</command>
+	<inputs>
+		<param type="data" format="bam" name="input" label="BAM Alignment File"/>
+	</inputs>
+	<outputs>
+		<data format="bam" name="output"/>
+	</outputs>
+	<stdio>
+		<exit_code range="0" level="warning" description="Normal" />
+		<exit_code range="1" level="fatal" description="Error in overclipping" />
+	</stdio>
+</tool>
