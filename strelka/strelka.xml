@@ -1,0 +1,75 @@
+<tool id="strelka" name="Strelka" version="1.0.14">
+	<description>
+		Somatic variant calling workflow for matched tumor-normal samples
+	</description>
+	<requirements>
+ 		<requirement type="set_environment">STRELKA_INSTALL_DIR</requirement>
+ 		<requirement type="set_environment">STRELKA_REPOSITORY_DIR</requirement>
+ 		<requirement type="package" version="1.0.14">strelka</requirement>
+		<requirement type="package" version="0.1.11">vcftools</requirement>
+	</requirements>
+	<parallelism method="multi" split_inputs="interval_file" split_mode="to_size" split_size="1" shared_inputs="normal,tumour,config" merge_outputs="snvs,indels"></parallelism>
+	<command>
+	
+	<!-- LINK BAM INDEX -->
+	ln -s $normal normal.bam;
+	ln -s $normal.metadata.bam_index normal.bam.bai;
+	ln -s $tumour tumour.bam;
+	ln -s $tumour.metadata.bam_index tumour.bam.bai;
+
+	<!-- CREATE ORIGINAL STRELKA MAKEFILE -->
+	\$STRELKA_INSTALL_DIR/bin/configureStrelkaWorkflow.pl
+	--normal \$(pwd)/normal.bam
+	--tumor \$(pwd)/tumour.bam
+	--ref ${reference.fields.path}
+	--config $config;
+
+	#if $interval_file
+		
+		<!-- CREATE SUB-MAKEFILE IF PARALLELISM TURNED ON -->
+		cp ./strelkaAnalysis/Makefile ./;
+
+		\$REPOSITORY_STRELKA_DIR/parse_strelka_makefile.py 
+		--makefile Makefile
+		--chrom \$(cat $interval_file | cut -f1)
+		--output ./strelkaAnalysis/Makefile;
+
+	#end if
+
+	<!-- RUN STRELKA -->
+	cd strelkaAnalysis;
+	make -j \${GALAXY_SLOTS:-1};
+
+	#if $interval_file
+
+		<!-- OUTPUT FOR PARALLEL OPTION - TO BE MERGED -->
+		cat ./chromosomes/\$(cat $interval_file | cut -f1)/somatic.snvs.vcf > $snvs;
+		cat ./chromosomes/\$(cat $interval_file | cut -f1)/somatic.indels.vcf > $indels;
+	
+	#else
+
+		<!-- OUTPUT FOR NORMAL OPTION - ALREADY MERGED -->
+		cat ./results/all.somatic.snvs.vcf > $snvs;
+		cat ./results/all.somatic.indels.vcf > $indels;	
+	
+	#end if
+
+	</command>
+	<inputs>
+		<param type="data" format="bam" name="normal" label="Normal Alignment File"/>
+		<param type="data" format="bam" name="tumour" label="Tumour Alignment File"/>
+		<param type="data" format="ini" name="config" label="Strelka Configuration File"/>
+		<param type="select" name="reference"  label="Reference File">
+			<options from_data_table="all_fasta"/>
+		</param>
+		<param type="data" format="txt" optional="true" name="interval_file" label="Inteval file" help="Created by make parallel, only use when parallelism is turned on"/>
+	</inputs>
+	<outputs>
+		<data format="vcf" name="snvs"/>
+		<data format="vcf" name="indels"/>
+	</outputs>
+	<stdio>
+		<regex match="INFO: Scanning reference genome" source="stderr" level="warning" description="Strelka verbose to stderr, not an error"/>
+		<regex match="INFO: Scanning reference genome complete" source="stderr" level="warning" description="Strelka verbose to stderr, not an error"/>
+	</stdio>
+</tool>
