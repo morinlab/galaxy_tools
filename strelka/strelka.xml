@@ -43,8 +43,8 @@
 	#if $interval_file
 
 		<!-- OUTPUT FOR PARALLEL OPTION - TO BE MERGED -->
-		cat ./chromosomes/\$(cat $interval_file | cut -f1)/somatic.snvs.vcf > $snvs;
-		cat ./chromosomes/\$(cat $interval_file | cut -f1)/somatic.indels.vcf > $indels;
+		cat ./chromosomes/\$(cat $interval_file | cut -f1)/all.somatic.snvs.vcf > $snvs;
+		cat ./chromosomes/\$(cat $interval_file | cut -f1)/all.somatic.indels.vcf > $indels;
 	
 	#else
 
