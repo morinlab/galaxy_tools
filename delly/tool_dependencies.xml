@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 	<tool_dependency>
-		<package name="boost" version="1.53.0">
-			<repository name="package_boost_1_53" owner="iuc" prior_installation_required="True"/>
+		<package name="boost" version="1.55.0">
+			<repository name="package_boost_1_55" owner="iuc" prior_installation_required="True"/>
 		</package>
 		<package name="bamtools" version="2.3.0">
 			<repository name="package_bamtools_2_3_0" owner="marcoalbuquerque" prior_installation_required="True"/>
@@ -14,8 +14,8 @@
 				<actions>
 					<action type="download_by_url">https://github.com/tobiasrausch/delly/archive/v0.6.1.tar.gz</action>
 					<action type="set_environment_for_install">
-						<repository name="package_boost_1_53" owner="iuc">
-							<package name="boost" version="1.53.0"/>
+						<repository name="package_boost_1_55" owner="iuc">
+							<package name="boost" version="1.55.0"/>
 						</repository>
 					</action>
 					<action type="set_environment_for_install">
