@@ -29,7 +29,7 @@ if __name__ == '__main__':
 		)
 	args = parser.parse_args()
 
-	if (not args.chrom or not args.chrom_file) or (args.chrom and args.chrom_file):
+	if (not args.chrom and not args.chrom_file) or (args.chrom and args.chrom_file):
 		sys.exit('Must define a single chromosome entry or a single chromosome file')
 
 	chromosomes = [];
@@ -70,12 +70,13 @@ if __name__ == '__main__':
 		elif line.startswith('all:'):
 			makefile_out.write('all:\n')
 		elif re.search("--chrom=", line):
-			if re.search("|".join(chromosomes), line):
+			if re.search(''.join(["\s|".join(chromosomes),'\s']), line):
 				if re.search('bin', line):
 					makefile_out.write(line)
 				else:
-					add_at_end.push(line)
+					add_at_end.append(line)
 
 	makefile_in.close()
-	makefile_out.write(add_at_end)
+	for line in add_at_end:
+		makefile_out.write(line)
 	makefile_out.close()
