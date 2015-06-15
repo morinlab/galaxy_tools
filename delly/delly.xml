@@ -41,25 +41,30 @@
 			;
   	#end for
 
+		<!-- Touch all VCF Files incase they were not created -->
+		#for $options in $args
+			touch ./output.$(option).vcf;
+		#end for
+
 		<!-- Combine VCF Files and Sort Lexographically -->
 		#set $option = $args[0]
-		grep ^\# output.$(option).vcf > $outfile;
-		grep ^\# -v output.$(option).vcf > variants.txt;
+		grep ^\# output.$(option).vcf &gt; $outfile;
+		grep ^\# -v output.$(option).vcf &gt; variants.txt;
 		
 		<!-- If we called more than a single variant type, concatenate all the other types variant output -->
 		#if isinstance( $type.value, list ):
 			#for $option in $args[1:]
-				grep ^\# -v output.$(option).vcf >> variants.txt;
+				grep ^\# -v output.$(option).vcf &gt;&gt; variants.txt;
 			#end for
 		#end if
 		
 		<!-- Sort all variant output, assuming that it will sort lexographically by chromosome, then position, ID  -->
 		<!-- In future, maybe develop a script to sort by bam header -->
-		sort -k1,1d -k2,2n -k3,3d variants.txt > sortedVariants.txt;
+		sort -k1,1d -k2,2n -k3,3d variants.txt &gt; sortedVariants.txt;
 		
 		<!-- Filter Variants that have Passed Quality Checks -->
 		#if $filterCalls
-			awk '{if ($7 == "PASS") print $0;}' sortedVariants.txt >> $outfile;
+			awk '{if ($7 == "PASS") print $0;}' sortedVariants.txt &gt;&gt; $outfile;
 		#else
 			cat sortedVariants.txt >> $outfile;
 		#end if
@@ -103,4 +108,4 @@
 
 	</help>
 
-
+</tool>
