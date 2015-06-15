@@ -1,4 +1,6 @@
 import argparse
+import sys
+import re
 
 if __name__ == '__main__':
 
@@ -12,8 +14,13 @@ if __name__ == '__main__':
 	parser.add_argument(
 		"-c", "--chrom",
 		type=str,
-		required=True,
+		required=False,
 		help="Chromosome present in the Strelka Makefile"
+		)
+	parser.add_argument(
+		"-cf", "--chrom_file",
+		required=False,
+		help="Chromosome File separated by newline"
 		)
 	parser.add_argument(
 		'-o', '--output',
@@ -22,20 +29,22 @@ if __name__ == '__main__':
 		)
 	args = parser.parse_args()
 
+	if (not args.chrom and not args.chrom_file) or (args.chrom and args.chrom_file):
+		sys.exit('Must define a single chromosome entry or a single chromosome file')
+
+	chromosomes = [];
+
+	if args.chrom_file:
+		chromosomes = open(args.chrom_file).read().splitlines()
+
+	if args.chrom:
+		chromosomes = [args.chrom]
+	add_at_end = []
 	makefile_in = open(args.makefile, 'r')
 	makefile_out = open(args.output, 'w')
 
-	count = 0
 	for line in makefile_in:
-		if count > 0:
-			makefile_out.write(line)
-			count = count - 1
-			if count == 0:
-				makefile_out.write('\n')
-		elif count < 0:
-			count = count + 1
-			continue
-		elif line.startswith('script_dir'):
+		if line.startswith('script_dir'):
 			makefile_out.write(line)
 		elif line.startswith('call_script'):
 			makefile_out.write(line)		
@@ -59,20 +68,15 @@ if __name__ == '__main__':
 			makefile_out.write(line)
 			makefile_out.write('\n')
 		elif line.startswith('all:'):
-			makefile_out.write(line)
-			makefile_out.write('\n')
-		elif line.startswith('$(finish_task):'):
-			makefile_out.write(line)
-			makefile_out.write('\techo "DONE"\n')
-			makefile_out.write('\n')
-		elif line.startswith('_'.join(['chrom',args.chrom,'bin'])):
-			makefile_out.write(line)
-			count = 3	
-		elif line.startswith('_'.join(['chrom',args.chrom,'task'])):
-			makefile_out.write(line)
-			count = 3
-		elif line.startswith('chrom'):
-			count = -3
+			makefile_out.write('all:\n')
+		elif re.search("--chrom=", line):
+			if re.search(''.join(["\s|".join(chromosomes),'\s']), line):
+				if re.search('bin', line):
+					makefile_out.write(line)
+				else:
+					add_at_end.append(line)
 
 	makefile_in.close()
+	for line in add_at_end:
+		makefile_out.write(line)
 	makefile_out.close()
