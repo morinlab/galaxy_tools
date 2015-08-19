@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<tool_dependency>
+	<package name="pysam" version="0.8.1">
+		<repository name="package_pysam_0_8_1" owner="marcoalbuquerque"/>
+	</package>
+	<package name="make_parallel" version="1.0.0">
+		<install version="1.0">
+			<actions>
+				<action type="move_file">
+					<source>$REPOSITORY_INSTALL_DIR/make_interval.py</source>
+					<destination>$INSTALL_DIR</destination>
+				</action>
+				<action type="set_environment">
+					<environment_variable action="set_to" name="MAKE_PARALLEL_DIR">$INSTALL_DIR</environment_variable>
+				</action>
+			</actions>
+		</install>
+	</package>
+</tool_dependency>

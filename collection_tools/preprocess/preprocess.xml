@@ -1,0 +1,30 @@
+<tool id="preprocess" name="preprocess" version="0.0.1">
+	<description>
+		Preprocess Tumour Normal Pairs for Cancer Genomic Workflows
+	</description>
+	<requirements>
+		<requirement type="package" version="1.0.13">bamutil</requirement>
+	</requirements>
+	<command>
+	<![CDATA[
+
+		samtools view -u $input_bam		
+		#if $single_interval
+			\$( cat $single_interval )
+		#end if
+		| bam clipOverlap --in -.ubam --out $output;
+
+	]]>
+	</command>
+	<inputs>
+		<param type="data" format="bam" name="input_bam" label="Specify BAM Alignment File"/>
+		<param type="data" format="bed,txt" name="single_interval" label="Specify Interval" optional="true"/>
+	</inputs>
+	<outputs>
+		<data format="bam" name="output"/>
+	</outputs>
+	<stdio>
+		<exit_code range="0" level="warning" description="Normal" />
+		<exit_code range="1" level="fatal" description="Error in overclipping" />
+	</stdio>
+</tool>
