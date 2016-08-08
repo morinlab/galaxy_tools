@@ -1,3 +1,2 @@
-# Cancer Genomics Galaxy Tools
-
-A collection of Galaxy tools and workflows for performing cancer genome analyses.
+# tools-morinlab
+Cancer genomics tools for the Galaxy platform
