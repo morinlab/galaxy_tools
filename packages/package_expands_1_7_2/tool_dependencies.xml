@@ -2,14 +2,40 @@
 <tool_dependency>
 <!-- R -->
 	<package name="R" version="3.1.2">
-		<repository changeset_revision="2447d7d88f7e" name="package_r_3_1_2" owner="iuc" prior_installation_required="True" />	
+		<repository name="package_r_3_1_2" owner="iuc" prior_installation_required="True" />	
+	</package>
+	<package name="setup_rJava" version="1.0" prior_installation_required="True">
+		<install version="1.0">
+			<actions>
+				<action type="set_environment_for_install">
+					<repository name="package_r_3_1_2" owner="iuc">
+						<package name="R" version="3.1.2"/>
+					</repository>
+				</action>
+				<action type="shell_command">R CMD javareconf -e</action>
+				<action type="set_environment">
+					<environment_variable name="JAVA_HOME">$JAVA_HOME</environment_variable>
+					<environment_variable name="JAVA">$JAVA</environment_variable>
+					<environment_variable name="JAVAC">$JAVAC</environment_variable>
+					<environment_variable name="JAVA_LIBS">$JAVA_LIBS</environment_variable>
+					<environment_variable name="JAVA_CPPFLAGS">$JAVA_CPPFLAGS</environment_variable>
+					<environment_variable name="JAVA_LD_LIBRARY_PATH">$JAVA_LD_LIBRARY_PATH</environment_variable>
+					<environment_variable name="JAR">$JAR</environment_variable>
+					<environment_variable name="JAVAH">$JAVAH</environment_variable>
+				</action>
+			</actions>
+		</install>
 	</package>
 <!-- EXPANDS and other R packages -->
 	<package name="expands" version="1.7.2">
 		<install version="1.0">
 		<actions>
+			<action type="set_environment_for_install">
+					<package name="setup_rJava" version="1.0"/>
+			</action>
+
 			<action type="setup_r_environment">
-			<repository changeset_revision="2447d7d88f7e" name="package_r_3_1_2" owner="iuc">	
+			<repository name="package_r_3_1_2" owner="iuc">	
 				<package name="R" version="3.1.2" />	
 			</repository>
 			<package>https://cran.r-project.org/src/contrib/modeltools_0.2-21.tar.gz</package>
