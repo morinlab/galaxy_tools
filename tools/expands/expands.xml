@@ -3,7 +3,7 @@
 		Expanding Ploidy and Allele Frequency on Nested Subpopulations (expands) characterizes coexisting subpopulations in a single tumor sample using copy number and allele frequencies derived from exome- or whole genome sequencing input data.
 	</description>
 
-	<macros>
+	<!-- <macros>
         <import>citation_macros.xml</import>
     </macros>    
 
@@ -12,29 +12,31 @@
 		<requirement type="set_environment">R_SCRIPT_PATH</requirement>
 		<requirement type="package" version="3.1.2">R</requirement>
 		<requirement type="package" version="1.7.2">expands</requirement>
-	</requirements>
+	</requirements> -->
+
+	<stdio>
+       <exit_code range="1:" level="warning" />
+       <exit_code range=":-1" level="warning" />
+       <regex match="Error:" />
+       <regex match="Exception:" />
+   	</stdio>
 
 	<command>
-		<!-- Run EXPANDS -->
-		Rscript \$R_SCRIPT_PATH/run_expands.R
-		$segments $segments_mode $maf $sample_id .
-		--loh $loh
-		--max_score $max_score
-		--precision $precision
-		--cn_style $cn_style
-		#if $genes=="true"
-			--genes $genes
-		#end if
-		#if $effects="true"
-			--effects $effects
-		#end if
-		--orderBy $orderBy
+		<![CDATA[
+			Rscript ~/Repos/galaxy_tools/tools/expands/run_expands.R $segments $segments_mode $maf $sample_id . --loh $advanced_expands_options.loh --max_score $advanced_expands_options.max_score --precision $advanced_expands_options.precision --cn_style $advanced_expands_options.cn_style
+				#if $plotting_options.genes:
+					--genes $plotting_options.genes
+				#end if
+				#if $plotting_options.effects:
+					--effects $plotting_options.effects
+				#end if
+				--orderBy $plotting_options.orderBy;
 
-		<!-- Move output -->
-		mv ./*_rawPlot.custom.png $rawplot;
-		mv ./*_adjPlot.custom.png $adjplot;
-		mv ./*.final.sps $subpops;
-		mv ./*.dm.tsv $snvs;
+			mv ./expands_rawAF.png $rawplot;
+			mv ./expands_adjustedAF.png $adjplot;
+			mv ./expands_mutations.tsv $snvs;
+			mv ./expands_sps.tsv $subpops;
+		]]>
 	</command>
 
 	<inputs>
@@ -50,7 +52,7 @@
 
 		<!-- Advanced options supplied to EXPANDS -->
 		<section name="advanced_expands_options" title="Advanced EXPANDS Options" expanded="False">
-			<param type="select"    name="loh"       optional="true" value="1">
+			<param type="select"    name="loh"       optional="true" value="1" label="How should LOH events be handled?">
 				<option value="0">Ignore LOH events</option>
 				<option value="1">Include all copy-neutral LOH segments and their BAF in clustering</option>
 				<option value="2">Include deletion LOH only</option>
@@ -101,18 +103,16 @@
 		<data format="tabular" name="snvs"/>
 	</outputs>
 
-	<tests>
+	<!-- <tests>
 	</tests>
 
 	<help>
-		Infer clonal structure
+		TODO
     </help>  
 
 	<citations>
         <expand macro="morinlab_citation"/>
         <expand macro="galaxy_citation"/>
         <expand macro="expands_citation"/>
-    </citations>
-
-
+    </citations> -->
 </tool>

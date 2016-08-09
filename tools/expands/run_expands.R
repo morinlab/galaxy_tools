@@ -235,28 +235,31 @@ print("------------------------------------------")
 
 # 4. Plot and save results
 # Save raw custom visualization
-out_cust_raw <- paste0(out_dir, "/", samp_param, "_rawPlot.custom.png")
+out_cust_raw <- file.path(out_dir, "expands_rawAF.png")
 png(filename = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = TRUE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
 print("Saved raw custom visualization")
     
 # Save VAF-corrected custom visualization
-out_cust <- paste0(out_dir, "/", samp_param, "_adjPlot.custom.png")
+out_cust <- file.path(out_dir, "expands_adjustedAF.png")
 png(filename = out_cust, width = 6, height = 6, res = 200, units = "in")
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = FALSE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
 print("Saved adjusted-AF custom visualization")  
 
 # Save table with mutations assigned to SPs
-out_dm <- paste0(out_dir, "/", samp_param, ".dm.tsv")
+out_dm <- file.path(out_dir, "expands_mutations.tsv")
 suppressWarnings(write.table(aM$dm, file = out_dm, quote = FALSE, sep = "\t", row.names=FALSE))
 print(paste0("Mutation details saved to ", out_dm))
 
 # Save details of final SPs
-out_final_sps <- paste0(out_dir, "/", samp_param, ".final.sps")
+out_final_sps <- file.path(out_dir, "expands_sps.tsv")
 write.table(aM$finalSPs, file = out_final_sps, row.names = FALSE, sep = '\t', quote = FALSE)
-
 print(paste0("Final subpopulations predicted in this sample (saved to ", out_final_sps, "):"))
+
 print("Completed Step 4: Visualization of results")
-print("------------------------------------------")
+
+Sys.sleep(300)
+
+print("-------------- EXPANDS complete. -----------------")
