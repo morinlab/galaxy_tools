@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool_dependency>
+	<package name="expands" version="1.7.2">
+		<repository name="package_expands_1_7_2"/>
+	</package>
+</tool_dependency>
