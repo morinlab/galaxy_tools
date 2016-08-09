@@ -3,6 +3,10 @@
 		Expanding Ploidy and Allele Frequency on Nested Subpopulations (expands) characterizes coexisting subpopulations in a single tumor sample using copy number and allele frequencies derived from exome- or whole genome sequencing input data.
 	</description>
 
+	<macros>
+        <import>citation_macros.xml</import>
+    </macros>    
+
 	<requirements>
 		<requirement type="binary">Rscript</requirement>
 		<requirement type="set_environment">R_SCRIPT_PATH</requirement>
@@ -11,18 +15,26 @@
 	</requirements>
 
 	<command>
+		<!-- Run EXPANDS -->
 		Rscript \$R_SCRIPT_PATH/run_expands.R
 		$segments $segments_mode $maf $sample_id .
 		--loh $loh
 		--max_score $max_score
 		--precision $precision
 		--cn_style $cn_style
-		--plot_custom True
 		#if $genes=="true"
-		--genes $genes
+			--genes $genes
+		#end if
 		#if $effects="true"
-		--effects $effects
+			--effects $effects
+		#end if
 		--orderBy $orderBy
+
+		<!-- Move output -->
+		mv ./*_rawPlot.custom.png $rawplot;
+		mv ./*_adjPlot.custom.png $adjplot;
+		mv ./*.final.sps $subpops;
+		mv ./*.dm.tsv $snvs;
 	</command>
 
 	<inputs>
@@ -81,5 +93,26 @@
 			</param>
 		</section>
 	</inputs>
+
+	<outputs>
+		<data format="png" name="rawplot"/>
+		<data format="png" name="adjplot"/>
+		<data format="tabular" name="subpops"/>
+		<data format="tabular" name="snvs"/>
+	</outputs>
+
+	<tests>
+	</tests>
+
+	<help>
+		Infer clonal structure
+    </help>  
+
+	<citations>
+        <expand macro="morinlab_citation"/>
+        <expand macro="galaxy_citation"/>
+        <expand macro="expands_citation"/>
+    </citations>
+
 
 </tool>

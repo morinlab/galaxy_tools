@@ -48,16 +48,13 @@ p <- add_argument(p, "--precision", default = 0.05, help = "precision for EXPAND
 p <- add_argument(p, "--cn_style", default = 2,
                   help = "1 for integer values, 2 for rational numbers calculated from CN log ratios (recommended)")
 
-
 # optional custom plotting parameters
-p <- add_argument(p, "--plot_custom", flag = TRUE,
-                  help = "Plot cleaner EPXANDS plots (requires dependencies!).")
 p <- add_argument(p, "--genes", default = NULL,
                   help = "If --plot_custom passed as flag, label mutations in these genes in custom plot (specify file with one gene per line)")
 p <- add_argument(p, arg = "--effects", help = "Comma-separated list of VEP effect criteria. If --plot_custom passed and --genes provided, filter mutations to label to the these effects. By default, plots nonsilent variants.",
                   default = "Frame_Shift_Del,Frame_Shift_Ins,In_Frame_Del,In_Frame_Ins,Missense_Mutation,Nonsense_Mutation,Nonstop_Mutation,Splice_Site,Translation_Start_Site")
 p <- add_argument(p, arg = "--orderBy", help = "If --plot_custom passed as flag, controls ordering of SNVs in custom plot. Options: chr (Chromosome & Start pos), conf (confidence of SP assignment)",
-                  default = "conf")
+                  default = "chr")
 
 
 # --------- Get arguments / define other shared variables -------
@@ -72,14 +69,9 @@ max_score    <- as.double(args$max_score)
 precision    <- as.double(args$precision)
 cn_style     <- args$cn_style
 out_dir      <- args$output_dir
-plot_custom  <- args$plot_custom 
 effects      <- unlist(strsplit(as.character(args$effects), ","))
 orderBy      <- args$orderBy
 if (!is.na(args$genes)) genes <- scan(args$genes, what = "character")
-
-# make sure directories exist
-dir.create(out_dir, recursive = TRUE)
-dir.create(pyclone_dir, recursive = TRUE)
 
 # could be made arguments
 min_freq <-  0.1
@@ -242,47 +234,19 @@ print("Completed Step 3: Assignment of SNVs to predicted SPs")
 print("------------------------------------------")
 
 # 4. Plot and save results
-# Save raw visualization
-out_fig_raw <- paste0(out_dir, "/", samp_param, "_rawPlot.pdf")
-pdf(out_fig_raw)
-plotSPs(aM$dm, sampleID = sample, cex = 1, rawAF = TRUE)
+# Save raw custom visualization
+out_cust_raw <- paste0(out_dir, "/", samp_param, "_rawPlot.custom.png")
+png(filename = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
+plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = TRUE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
-print("Saved raw visualization")
-
-# Save VAF-corrected visualization
-out_fig <- paste0(out_dir, "/", samp_param, ".pdf")
-pdf(out_fig)
-plotSPs(aM$dm, sampleID = sample, cex = 1)
+print("Saved raw custom visualization")
+    
+# Save VAF-corrected custom visualization
+out_cust <- paste0(out_dir, "/", samp_param, "_adjPlot.custom.png")
+png(filename = out_cust, width = 6, height = 6, res = 200, units = "in")
+plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = FALSE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
-print("Saved adjusted-AF visualization")
-
-if (plot_custom) {
-  # Check for dependencies
-  plot_deps <- list("magrittr", "ggrepel", "ggplot2", "grid", "gtable", "dplyr")
-  missing <- plot_deps[!(plot_deps %in% installed.packages()[,"Package"])]
-  
-  if (length(missing) >= 1) {
-    print("Missing required dependencies for custom plots, therefore not executing. Please install:")
-    print(missing)
-    
-  } else {
-    
-    # Save raw custom visualization
-    out_cust_raw <- paste0(out_dir, "/", samp_param, "_rawPlot.custom.png")
-    png(filename = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
-    plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = TRUE, orderBy = orderBy, genes = genes, effects = effects)
-    dev.off()
-    print("Saved raw custom visualization")
-    
-    # Save VAF-corrected custom visualization
-    out_cust <- paste0(out_dir, "/", samp_param, ".custom.png")
-    png(filename = out_cust, width = 6, height = 6, res = 200, units = "in")
-    plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = FALSE, orderBy = orderBy, genes = genes, effects = effects)
-    dev.off()
-    print("Saved adjusted-AF custom visualization")
-  }
-  
-}
+print("Saved adjusted-AF custom visualization")  
 
 # Save table with mutations assigned to SPs
 out_dm <- paste0(out_dir, "/", samp_param, ".dm.tsv")
