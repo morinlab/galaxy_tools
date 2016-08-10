@@ -259,7 +259,4 @@ write.table(aM$finalSPs, file = out_final_sps, row.names = FALSE, sep = '\t', qu
 print(paste0("Final subpopulations predicted in this sample (saved to ", out_final_sps, "):"))
 
 print("Completed Step 4: Visualization of results")
-
-Sys.sleep(300)
-
 print("-------------- EXPANDS complete. -----------------")
