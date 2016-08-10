@@ -10,12 +10,14 @@
 		<install version="1.0">
 		<actions>
 			<action type="set_environment_for_install">
-					<repository name="package_r_3_1_2" owner="iuc">
-						<package name="R" version="3.1.2"/>
-					</repository>
-				</action>
-				<action type="shell_command">R CMD javareconf -e</action>
-			<action type="setup_r_environment">
+				<repository name="package_r_3_1_2" owner="iuc">
+					<package name="R" version="3.1.2"/>
+				</repository>
+			</action>
+			<!-- <action type="shell_commnad">apt-get install r-cran-rjava</action> -->
+<!-- 			<action type="shell_command">R CMD javareconf -e</action>
+ -->		
+ 			<action type="setup_r_environment">
 			<repository name="package_r_3_1_2" owner="iuc">	
 				<package name="R" version="3.1.2" />	
 			</repository>
@@ -27,15 +29,32 @@
 			<package>https://cran.r-project.org/src/contrib/ape_3.5.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/permute_0.9-0.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/moments_0.14.tar.gz</package>
-			<package>https://cran.r-project.org/src/contrib/rJava_0.9-8.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/lattice_0.20-33.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/argparser_0.4.tar.gz</package>
-			<package>https://cran.r-project.org/src/contrib/expands_1.7.2.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/matlab_1.0.2.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/digest/digest_0.6.9.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/gtable_0.2.0.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/Rcpp/Rcpp_0.12.5.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/plyr/plyr_1.8.3.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/stringi/stringi_1.0-1.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/magrittr_1.5.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/stringr/stringr_0.6.2.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/reshape2/reshape2_1.4.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/RColorBrewer_1.1-2.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/dichromat_2.0-0.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/colorspace_1.2-6.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/munsell/munsell_0.4.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/labeling_0.3.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/scales/scales_0.3.0.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/ggplot2_2.1.0.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/ggrepel_0.5.tar.gz</package>
-			<package>https://cran.r-project.org/src/contrib/gtable_0.2.0.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/assertthat_0.1.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/lazyeval_0.2.0.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/tibble_1.1.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/DBI_0.4-1.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/R6/R6_2.1.1.tar.gz</package>
+			<package>https://cran.r-project.org/src/contrib/Archive/BH/BH_1.60.0-1.tar.gz</package>
 			<package>https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz</package>
 			</action>
 		</actions>
