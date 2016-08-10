@@ -2,24 +2,25 @@
 <tool_dependency>
 <!-- R -->
 	<package name="R" version="3.1.2">
-		<repository name="package_r_3_1_2" owner="iuc" prior_installation_required="True" />	
+		<repository name="package_r_3_1_2_rjava" owner="morinlab" prior_installation_required="True" />	
 	</package>
 	
 <!-- EXPANDS and other R packages -->
 	<package name="expands" version="1.7.2">
+
 		<install version="1.0">
 		<actions>
+
 			<action type="set_environment_for_install">
-				<repository name="package_r_3_1_2" owner="iuc">
+				<repository name="package_r_3_1_2_rjava" owner="morinlab">
 					<package name="R" version="3.1.2"/>
 				</repository>
-				<environment_variable action="prepend_to" name="PATH">/usr/lib/R/site-library</environment_variable>
 			</action>
-			<!-- <action type="shell_commnad">apt-get install r-cran-rjava</action> -->
-<!-- 			<action type="shell_command">R CMD javareconf -e</action>
- -->		
+
+			<action type="shell_command">R CMD javareconf -e</action>
+
  			<action type="setup_r_environment">
-				<repository name="package_r_3_1_2" owner="iuc">	
+				<repository name="package_r_3_1_2_rjava" owner="morinlab">	
 					<package name="R" version="3.1.2" />	
 				</repository>
 				<package>https://cran.r-project.org/src/contrib/modeltools_0.2-21.tar.gz</package>
@@ -59,8 +60,11 @@
 				<package>https://cran.r-project.org/src/contrib/dplyr_0.5.0.tar.gz</package>
 				<package>https://cran.r-project.org/src/contrib/expands_1.7.2.tar.gz</package>
 			</action>
+			
 		</actions>
+
 		</install>
+
 	</package>
 	<readme>
 	Expanding Ploidy and Allele Frequency on Nested Subpopulations (EXPANDS) characterizes coexisting subpopulations in a single tumor sample using copy number and allele frequencies derived from exome- or whole genome-sequencing input data.
