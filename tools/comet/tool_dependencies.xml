@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="comet" version="1.0.2">
+    <repository name="package_comet_1_0_2" owner="morinlab" />
+  </package>
+</tool_dependency>
