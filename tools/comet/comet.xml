@@ -1,20 +1,21 @@
 <tool id="comet" name="CoMEt" version="1.0.2">
   <description>
-    CoMEt is a stochastic algorithm for identifying collections of mutually exclusive alterations in cohorts of sequenced tumor samples. CoMEt is written in Python, with required extensions written in C and Fortran. It was developed by the Raphael research group in the Department of Computer Science and Center for Computational Molecular Biology at Brown University.
-
-CoMEt identifies a collection M of t alteration sets, each of size k, from a binary alteration matrix. CoMEt uses a Markov chain Monte Carlo (MCMC) algorithm to sample collections in proportion to their weight φ(M). The output of CoMEt is a list of collections, each with their sampling frequency, weight, and the weight φ(M) of each alteration set M ∈ M.
+    CoMEt is a stochastic algorithm for identifying collections of mutually exclusive alterations in cohorts of sequenced tumor samples.
   </description>
   <requirements>
     <requirement type="package" version="1.0.2">comet</requirement>
+    <requirement type="package" version="2.3.0">anaconda</requirement>
     <requirement type="set_environment">ANACONDA_ROOT_DIR</requirement>
     <requirement type="set_environment">COMET_INSTALL_DIR</requirement>
     <requirement type="set_environment">PYTHONPATH</requirement>
   </requirements>
   <command>
     mkdir outdir;
-    awk 'BEGIN {FS=OFS="\t"} \$37 ~ /p\.[^=]/ &amp;&amp; \$1 != "" {print \$1, \$16}' $maf | sort -u -k2,2 | awk 'BEGIN {FS=OFS="\t"} BEGIN {patient=""} \$2 != patient {patient=\$2} \$2 != patient{ printf "\n" patient "\t" \$1} \$2 == patient {printf "\t" \$1}' > mut_mat;
+    awk 'BEGIN {FS=OFS="\t"} \$37 ~ /p\.[^=]/ &amp;&amp; \$1 != "" {print \$1, \$16}' $maf > mat1.txt;
+    sort -u -k2,2 mat1.txt > mat2.txt;
+    awk 'BEGIN {FS=OFS="\t"} BEGIN {patient=""} \$2 != patient {patient=\$2} \$2 != patient{ printf "\n" patient "\t" \$1} \$2 == patient {printf "\t" \$1}' mat2.txt > mut_mat.txt;
 
-    python \$COMET_INSTALL_DIR/run_comet_full.py -o outdir -m mut_mat -np $num_perm -ks $gene_set_sizes
+    \$ANACONDA_ROOT_DIR/bin/python2.7 \$COMET_INSTALL_DIR/run_comet_full.py -o outdir -m mut_mat.txt -np $num_perm -ks $gene_set_sizes
 
     #if $advancedsettings.min_freq
       -mf $advancedsettings.min_freq
