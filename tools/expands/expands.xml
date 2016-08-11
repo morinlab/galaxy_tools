@@ -7,16 +7,9 @@
 		<requirement type="package" version="1.7.2">expands</requirement>
     </requirements>
 
-	<!-- <macros>
+	<macros>
         <import>citation_macros.xml</import>
     </macros>    
-
-	<requirements>
-		<requirement type="binary">Rscript</requirement>
-		<requirement type="set_environment">R_SCRIPT_PATH</requirement>
-		<requirement type="package" version="3.1.2">R</requirement>
-		<requirement type="package" version="1.7.2">expands</requirement>
-	</requirements> -->
 
 	<stdio>
        <exit_code range="1:" level="warning" />
@@ -109,16 +102,15 @@
 		<data format="tabular" name="snvs"/>
 	</outputs>
 
-	<!-- <tests>
+	<tests>
 	</tests>
 
-	<help>
-		TODO
+	<help>	
     </help>  
 
 	<citations>
         <expand macro="morinlab_citation"/>
         <expand macro="galaxy_citation"/>
         <expand macro="expands_citation"/>
-    </citations> -->
+    </citations>
 </tool>
