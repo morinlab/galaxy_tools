@@ -405,7 +405,7 @@ get_data_to_label <- function(var_df, maf, genes, effects) {
   return(label_df)
 }
 
-plot_expands_SPs <- function(dm, sampleID, maf, orderBy = "conf", rawAF = FALSE, genes = NULL, effects) {
+plot_expands_SPs <- function(dm, sampleID, maf, orderBy = "conf", rawAF = FALSE, genes, effects) {
   load_plot_libs()
   
   # Get data to plot

@@ -31,16 +31,16 @@
 		--max_score $advanced_expands_options.max_score
 		--precision $advanced_expands_options.precision
 		--cn_style $advanced_expands_options.cn_style
-		#if $plotting_options.genes == "True":
+		#if $plotting_options.genes
 			--genes $plotting_options.genes
 		#end if
-		#if $plotting_options.effects == "True":
+		#if $plotting_options.effects
 			--effects $plotting_options.effects
 		#end if
 		--orderBy $plotting_options.orderBy;
 
-		mv ./expands_rawAF.png $rawplot;
-		mv ./expands_adjustedAF.png $adjplot;
+		mv ./expands_rawAF.pdf $rawplot;
+		mv ./expands_adjustedAF.pdf $adjplot;
 		mv ./expands_mutations.tsv $snvs;
 		mv ./expands_sps.tsv $subpops;
 	</command>
@@ -103,8 +103,8 @@
 	</inputs>
 
 	<outputs>
-		<data format="png" name="rawplot"/>
-		<data format="png" name="adjplot"/>
+		<data format="pdf" name="rawplot"/>
+		<data format="pdf" name="adjplot"/>
 		<data format="tabular" name="subpops"/>
 		<data format="tabular" name="snvs"/>
 	</outputs>

@@ -71,7 +71,11 @@ cn_style     <- args$cn_style
 out_dir      <- args$output_dir
 effects      <- unlist(strsplit(as.character(args$effects), ","))
 orderBy      <- args$orderBy
-if (!is.na(args$genes)) genes <- scan(args$genes, what = "character")
+if (!is.na(args$genes)) {
+  genes <- scan(args$genes, what = "character")
+} else {
+  genes <- NULL
+}
 
 # could be made arguments
 min_freq <-  0.1
@@ -235,18 +239,18 @@ print("------------------------------------------")
 
 # 4. Plot and save results
 # Save raw custom visualization
-out_cust_raw <- file.path(out_dir, "expands_rawAF.png")
-png(filename = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
+out_cust_raw <- file.path(out_dir, "expands_rawAF.pdf")
+pdf(file = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = TRUE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
 print("Saved raw custom visualization")
     
 # Save VAF-corrected custom visualization
-out_cust <- file.path(out_dir, "expands_adjustedAF.png")
-png(filename = out_cust, width = 6, height = 6, res = 200, units = "in")
+out_cust <- file.path(out_dir, "expands_adjustedAF.pdf")
+pdf(file = out_cust, width = 6, height = 6, res = 200, units = "in")
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = FALSE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
-print("Saved adjusted-AF custom visualization")  
+print("Saved adjusted-AF custom visualization")
 
 # Save table with mutations assigned to SPs
 out_dm <- file.path(out_dir, "expands_mutations.tsv")
@@ -256,7 +260,7 @@ print(paste0("Mutation details saved to ", out_dm))
 # Save details of final SPs
 out_final_sps <- file.path(out_dir, "expands_sps.tsv")
 write.table(aM$finalSPs, file = out_final_sps, row.names = FALSE, sep = '\t', quote = FALSE)
-print(paste0("Final subpopulations predicted in this sample (saved to ", out_final_sps, "):"))
+print(paste0("Final subpopulations predicted in this sample saved to ", out_final_sps))
 
 print("Completed Step 4: Visualization of results")
 print("-------------- EXPANDS complete. -----------------")
