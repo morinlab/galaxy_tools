@@ -240,14 +240,14 @@ print("------------------------------------------")
 # 4. Plot and save results
 # Save raw custom visualization
 out_cust_raw <- file.path(out_dir, "expands_rawAF.pdf")
-pdf(file = out_cust_raw, width = 6, height = 6, res = 200, units = "in")
+pdf(file = out_cust_raw, width = 6, height = 6, onefile = FALSE)
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = TRUE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
 print("Saved raw custom visualization")
     
 # Save VAF-corrected custom visualization
 out_cust <- file.path(out_dir, "expands_adjustedAF.pdf")
-pdf(file = out_cust, width = 6, height = 6, res = 200, units = "in")
+pdf(file = out_cust, width = 6, height = 6, onefile = FALSE)
 plot_expands_SPs(aM$dm, sampleID = sample, maf = maf, rawAF = FALSE, orderBy = orderBy, genes = genes, effects = effects)
 dev.off()
 print("Saved adjusted-AF custom visualization")
