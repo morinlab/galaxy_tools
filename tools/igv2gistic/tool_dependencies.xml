@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<tool_dependency>
+  <package name="igv2gistic" version="1.0">
+    <install version="1.0">
+      <actions>
+        <action type="download_by_url">https://raw.githubusercontent.com/morinlab/lab_scripts/master/generate_gistic_inputs/generate_gistic_files_v4.0.py</action>
+        <action type="move_directory_files">
+          <source_directory>.</source_directory>
+          <destination_directory>$INSTALL_DIR</destination_directory>
+        </action>
+        <action type="set_environment">
+          <environment_variable action="set_to" name="IGV2GISTIC_SCRIPT_PATH">$INSTALL_DIR</environment_variable>
+        </action>
+      </actions>
+    </install>
+  </package>
+</tool_dependency>
