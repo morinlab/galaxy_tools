@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<tool_dependency>
+	<package name="morinlab_scripts" version="14.2">
+		<install version="1.0">
+			<actions>
+				<action type="download_by_url">
+					https://github.com/morinlab/lab_scripts/archive/14.2.tar.gz
+				</action>
+
+				<action type="set_environment">
+					<environment_variable action="set_to" name="MORINLAB_SCRIPTS">$INSTALL_DIR</environment_variable>
+				</action>
+			</actions>
+		</install>
+	</package>
+</tool_dependency>
