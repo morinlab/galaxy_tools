@@ -241,12 +241,18 @@
       <filter>advanced['a_options'] == "advanced_options" and 'scores.gistic' in advanced['outputs']</filter>
     </data>
   </outputs>
+  <tests>
+    <test>
+    </test>
+  </tests>
   <help>
-    **Reference** 
-    -----
-    works on command line:
 
-    **What it does**
-    ----
+The GISTIC module identifies regions of the genome that are significantly amplified or deleted across a set of samples.  Each aberration is assigned a G-score that considers the amplitude of the aberration as well as the frequency of its occurrence across samples.  False Discovery Rate q-values are then calculated for the aberrant regions, and regions with q-values below a user-defined threshold are considered significant.  For each significant region, a “peak region” is identified, which is the part of the aberrant region with greatest amplitude and frequency of alteration.  In addition, a “wide peak” is determined using a leave-one-out algorithm to allow for errors in the boundaries in a single sample. The “wide peak” boundaries are more robust for identifying the most likely gene targets in the region. Each significantly aberrant region is also tested to determine whether it results primarily from broad events (longer than half a chromosome arm), focal events, or significant levels of both.  The GISTIC module reports the genomic locations and calculated q-values for the aberrant regions.  It identifies the samples that exhibit each significant amplification or deletion, and it lists genes found in each “wide peak” region.
+
   </help>
+  <citations>
+    <expand macro="morinlab_citation" />
+    <expand macro="galaxy_citation" />
+    <expand macro="gistic_citation" />
+  </citations>
 </tool>
