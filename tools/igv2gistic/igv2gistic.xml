@@ -21,8 +21,8 @@
     <test>
       <param name="igv_seg" value="MCL.all.opt_clones.no_header.titan.igv.segments.txt" />
       <param name="bed_file" value="agilent_sureselect_all_exons_v5_and_utr.sort.merge.bed" />
-      <output name="out_seg" ftype="tabular" file="test.gistic.seg" />
-      <output name="markers" ftype="tabular" file="test.markers.txt" />
+      <output name="out_seg" ftype="tabular" file="gistic.seg" lines_diff="2" />
+      <output name="markers" ftype="tabular" file="markers.txt" lines_diff="2" />
     </test>
   </tests>
   <help>
