@@ -243,6 +243,10 @@
   </outputs>
   <tests>
     <test>
+      <param name="seg_file" value="MCL_all_cohorts.diagnostic.opt_clone.hg19.gistic.seg" />
+      <param name="markersfile" value="MCL_all_cohorts.diagnostic.opt_clone.hg19.markers.txt" />
+      <param name="ref_select" value="hg19" />
+      <output name="all_lesions_conf" value="all_lesions.conf_90.txt" lines_diff="2" />
     </test>
   </tests>
   <help>
