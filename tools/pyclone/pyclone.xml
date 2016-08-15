@@ -70,8 +70,9 @@
 				#end if
 				
 				#if $plotting_options.effects
-					--effects $plotting_options.effects;
+					--effects $plotting_options.effects
 				#end if
+				;
 			#end if
 		]]>
 
@@ -101,6 +102,7 @@
 
 			<when value="basic" />
 
+			<!-- Advanced PyClone run options -->
 			<when value="advanced">
 				<param type="text"    name="TUMOUR_CONTENTS"  value=""                          label="Space delimited list of tumour contents. Should match the order of --in_files (the list of inputs in mutations_file). If not given tumour content is assumed to 1.0 in all samples."/>
 
@@ -201,7 +203,7 @@
 
 		**Input**
 
-		This tool take a tab seperated value file with six required fields. This file can also be generated using the generate_pyclone_inputs_tool which takes a takes a MAF file and a segments.txt file produced by sequenza.
+		This tool take a tab seperated value file with six required fields. This file can also be generated using the 'Generate PyClone input' tool which takes a takes a MAF file and a segments.txt file produced by sequenza.
 
 		** The required fields of the header in this input file are**
 
