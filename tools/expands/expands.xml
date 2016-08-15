@@ -2,7 +2,10 @@
 	<description>
 		Expanding Ploidy and Allele Frequency on Nested Subpopulations (expands) characterizes coexisting subpopulations in a single tumor sample using copy number and allele frequencies derived from exome- or whole genome sequencing input data.
 	</description>
+
 	<requirements>
+		<requirement type="set_environment">MORINLAB_SCRIPTS</requirement>
+		<requirement type="package" version="14.2">morinlab_scripts</requirement>
 		<requirement type="set_environment">R_SCRIPT_PATH</requirement>
 		<requirement type="package" version="1.7.2">expands</requirement>
     </requirements>
@@ -19,11 +22,12 @@
    	</stdio>
 
 	<command>
-		Rscript \$R_SCRIPT_PATH/run_expands.R $segments $segments_mode $maf $sample_id .
+		Rscript \$MORINLAB_SCRIPTS/expands_wrapper/run_expands.R $segments $segments_mode $maf $sample_id .
 		--loh $advanced_expands_options.loh
 		--max_score $advanced_expands_options.max_score
 		--precision $advanced_expands_options.precision
 		--cn_style $advanced_expands_options.cn_style
+		--plot_custom
 		#if $plotting_options.genes
 			--genes $plotting_options.genes
 		#end if
@@ -32,10 +36,10 @@
 		#end if
 		--orderBy $plotting_options.orderBy;
 
-		mv ./expands_rawAF.pdf $rawplot;
-		mv ./expands_adjustedAF.pdf $adjplot;
-		mv ./expands_mutations.tsv $snvs;
-		mv ./expands_sps.tsv $subpops;
+		mv ./expands_custom_raw_*.pdf $rawplot;
+		mv ./expands_custom_adj_*.pdf $adjplot;
+		mv ./expands_mutations_*.tsv $snvs;
+		mv ./expands_sps_*.tsv $subpops;
 	</command>
 
 	<inputs>
