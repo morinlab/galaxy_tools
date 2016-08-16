@@ -3,7 +3,7 @@
   <package name="comet" version="1.0.2">
     <repository name="package_comet_1_0_2" owner="morinlab" />
   </package>
-  <package name="anaconda" version="2.3.0">
-    <repository changeset_revision="dbcbbfad1d92" name="package_anaconda_2_3_0" owner="iuc" />
+  <package name="anaconda2" version="4.0.0">
+    <repository changeset_revision="67def16bd486" name="package_anaconda2_4_0_0" owner="morinlab" />
   </package>
 </tool_dependency>

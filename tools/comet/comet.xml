@@ -4,7 +4,7 @@
   </description>
   <requirements>
     <requirement type="package" version="1.0.2">comet</requirement>
-    <requirement type="package" version="2.3.0">anaconda</requirement>
+    <requirement type="package" version="4.0.0">anaconda2</requirement>
     <requirement type="set_environment">ANACONDA_ROOT_DIR</requirement>
     <requirement type="set_environment">COMET_INSTALL_DIR</requirement>
     <requirement type="set_environment">PYTHONPATH</requirement>
