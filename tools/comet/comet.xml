@@ -109,5 +109,5 @@ CoMEt identifies a collection M of t alteration sets, each of size k, from a bin
     <expand macro="morinlab_citation" />
     <expand macro="galaxy_citation" />
     <expand macro="comet_citation" />
-  <citations>
+  </citations>
 </tool>

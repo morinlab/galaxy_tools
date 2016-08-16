@@ -4,6 +4,6 @@
     <repository name="package_comet_1_0_2" owner="morinlab" />
   </package>
   <package name="anaconda2" version="4.0.0">
-    <repository changeset_revision="67def16bd486" name="package_anaconda2_4_0_0" owner="morinlab" />
+    <repository name="package_anaconda2_4_0_0" owner="morinlab" changeset_revision="67def16bd486"/>
   </package>
 </tool_dependency>
